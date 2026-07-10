@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\FolderController;
+use App\Http\Controllers\Api\NoteController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,4 +23,14 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users', [UserController::class, 'index']);
+});
+
+Route::middleware('auth:sanctum')->group(function(){
+    Route::apiResource('folders', FolderController::class)
+    ->except(['show']);
+    Route::get('folders/{folder}', [FolderController::class, 'show']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('notes', NoteController::class);
 });
