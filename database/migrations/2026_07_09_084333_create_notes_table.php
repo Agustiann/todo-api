@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignUuid('folder_id')
                 ->nullable()
                 ->constrained('folders')
-                ->nullOnDelete();
+                ->cascadeOnDelete();
 
             $table->string('title');
             $table->text('content')->nullable();
@@ -34,13 +34,7 @@ return new class extends Migration
                 ->constrained('users')
                 ->nullOnDelete();
 
-            $table->foreignUuid('deleted_by')
-                ->nullable()
-                ->constrained('users')
-                ->nullOnDelete();
-
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

@@ -17,6 +17,7 @@ class NoteController extends Controller
     {
         $notes = $request->user()
             ->notes()
+            ->with('images')
             ->when($request->filled('folder_id'), fn ($q) => $q->where('folder_id', $request->string('folder_id')))
             ->latest('updated_at')
             ->get();
@@ -44,10 +45,10 @@ class NoteController extends Controller
         ], 201);
     }
 
-    public function show(Request $request, Note $note): JsonResponse
+    public function show(Note $note): JsonResponse
     {
         Gate::authorize('view', $note);
-
+        $note->load('images');
         return response()->json([
             'message' => 'Detail note berhasil diambil.',
             'data' => new NoteResource($note),

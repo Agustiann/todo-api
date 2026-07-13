@@ -6,11 +6,10 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class NoteImage extends Model
 {
-    use HasFactory, HasUuids, SoftDeletes;
+    use HasFactory, HasUuids;
 
     protected $keyType = 'string';
 
@@ -29,7 +28,6 @@ class NoteImage extends Model
         'mime_type',
         'created_by',
         'updated_by',
-        'deleted_by',
     ];
 
     /**
@@ -57,10 +55,5 @@ class NoteImage extends Model
     public function updater(): BelongsTo
     {
         return $this->belongsTo(User::class, 'updated_by');
-    }
-
-    public function deleter(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'deleted_by');
     }
 }

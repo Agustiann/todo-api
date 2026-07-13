@@ -30,13 +30,7 @@ return new class extends Migration
                 ->constrained('users')
                 ->nullOnDelete();
 
-            $table->foreignUuid('deleted_by')
-                ->nullable()
-                ->constrained('users')
-                ->nullOnDelete();
-
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

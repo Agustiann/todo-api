@@ -7,13 +7,18 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class NoteImageResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'file_name' => $this->file_name,
+            'url' => route('notes.images.show', [
+                'note' => $this->note_id,
+                'image' => $this->id,
+            ]),
+            'file_size' => $this->file_size,
+            'mime_type' => $this->mime_type,
+            'created_at' => $this->created_at,
+        ];
     }
 }

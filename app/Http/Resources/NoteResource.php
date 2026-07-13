@@ -14,6 +14,7 @@ class NoteResource extends JsonResource
             'title' => $this->title,
             'content' => $this->content,
             'folder_id' => $this->folder_id,
+            'images' => NoteImageResource::collection($this->whenLoaded('images')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

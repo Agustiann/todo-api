@@ -42,7 +42,7 @@ class FolderController extends Controller
         ], 201);
     }
 
-    public function show(Request $request, Folder $folder): JsonResponse
+    public function show(Folder $folder): JsonResponse
     {
         Gate::authorize('view', $folder);
 

@@ -2,28 +2,28 @@
 
 namespace App\Http\Requests\NoteImage;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreNoteImageRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'image' => ['nullable', 'file', 'image', 'max:2048'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'image.file' => 'File tidak valid.',
+            'image.image' => 'File harus berupa gambar.',
+            'image.max' => 'Ukuran gambar maksimal 2MB.',
         ];
     }
 }
