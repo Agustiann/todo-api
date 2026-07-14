@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FolderController;
+use App\Http\Controllers\Api\NoteChecklistController;
 use App\Http\Controllers\Api\NoteController;
 use App\Http\Controllers\Api\NoteImageController;
 use App\Http\Controllers\Api\UserController;
@@ -24,19 +25,10 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware('auth:api_token')->group(function () {
     Route::get('/users', [UserController::class, 'index']);
-});
-
-Route::middleware('auth:api_token')->group(function(){
-    Route::apiResource('folders', FolderController::class)
-    ->except(['show']);
-    Route::get('folders/{folder}', [FolderController::class, 'show']);
-});
-
-Route::middleware('auth:api_token')->group(function () {
+    Route::apiResource('folders', FolderController::class);
     Route::apiResource('notes', NoteController::class);
-
-    Route::post('notes/{note}/images', [NoteImageController::class, 'store']);
-    Route::get('notes/{note}/images/{image}', [NoteImageController::class, 'show'])
-        ->name('notes.images.show');
-    Route::delete('notes/{note}/images/{image}', [NoteImageController::class, 'destroy']);
+    Route::apiResource('notes.images', NoteImageController::class)
+        ->only(['store', 'show', 'destroy']);
+    Route::apiResource('notes.checklists', NoteChecklistController::class)
+        ->only(['index', 'store', 'update', 'destroy']);
 });
