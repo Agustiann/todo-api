@@ -15,11 +15,6 @@ class NoteChecklist extends Model
 
     public $incrementing = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'note_id',
         'is_completed',
@@ -29,11 +24,6 @@ class NoteChecklist extends Model
         'updated_by',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [

@@ -21,7 +21,7 @@ class AuthController extends Controller
             'password' => $request->validated('password'),
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->generateApiToken();
 
         return response()->json([
             'message' => 'Registrasi berhasil.',
@@ -40,7 +40,7 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->generateApiToken();
 
         return response()->json([
             'message' => 'Login berhasil.',
@@ -51,7 +51,7 @@ class AuthController extends Controller
 
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
+        $request->user()->revokeApiToken();
 
         return response()->json([
             'message' => 'Logout berhasil.',

@@ -15,32 +15,14 @@ class NoteImage extends Model
 
     public $incrementing = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'note_id',
         'file_name',
         'file_path',
-        'file_size',
         'mime_type',
         'created_by',
         'updated_by',
     ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'file_size' => 'integer',
-        ];
-    }
 
     public function note(): BelongsTo
     {
