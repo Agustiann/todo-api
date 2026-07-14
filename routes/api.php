@@ -34,6 +34,7 @@ Route::middleware('auth:sanctum')->group(function(){
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('notes', NoteController::class);
+    Route::get('images', [NoteImageController::class, 'index']);
 
     Route::post('notes/{note}/images', [NoteImageController::class, 'store']);
     Route::get('notes/{note}/images/{image}', [NoteImageController::class, 'show'])

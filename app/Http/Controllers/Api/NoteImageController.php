@@ -26,7 +26,7 @@ class NoteImageController extends Controller
         }
         if ($note->images()->count() >= self::MAX_IMAGES_PER_NOTE) {
             return response()->json([
-                'message' => 'Maksimal '.self::MAX_IMAGES_PER_NOTE.' gambar per note.',
+                'message' => 'Maksimal ' . self::MAX_IMAGES_PER_NOTE . ' gambar per note.',
             ], 422);
         }
         $file = $request->file('image');
@@ -53,6 +53,19 @@ class NoteImageController extends Controller
         abort_unless(file_exists($path), 404, 'File gambar tidak ditemukan.');
         return response()->file($path, [
             'Content-Type' => $image->mime_type,
+        ]);
+    }
+
+    public function index(Request $request): JsonResponse
+    {
+        $images = NoteImage::whereHas('note', fn($q) => $q->where('user_id', $request->user()->id))
+            ->with('note:id,title')
+            ->latest()
+            ->get();
+
+        return response()->json([
+            'message' => 'Daftar gambar berhasil diambil.',
+            'data' => NoteImageResource::collection($images),
         ]);
     }
 

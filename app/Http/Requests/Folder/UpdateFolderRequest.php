@@ -21,7 +21,6 @@ class UpdateFolderRequest extends FormRequest
                 'max:255',
                 Rule::unique('folders', 'name')
                     ->where('user_id', $this->user()->id)
-                    ->whereNull('deleted_at')
                     ->ignore($this->route('folder')->id),
             ],
         ];
