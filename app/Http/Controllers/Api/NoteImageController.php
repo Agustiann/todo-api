@@ -16,6 +16,19 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class NoteImageController extends Controller
 {
     private const MAX_IMAGES_PER_NOTE = 3;
+
+    public function index(Note $note): JsonResponse
+    {
+        Gate::authorize('view', $note);
+
+        $images = $note->images()->latest()->get();
+
+        return response()->json([
+            'message' => 'Daftar gambar berhasil diambil.',
+            'data' => NoteImageResource::collection($images),
+        ]);
+    }
+
     public function store(StoreNoteImageRequest $request, Note $note): JsonResponse
     {
         Gate::authorize('update', $note);

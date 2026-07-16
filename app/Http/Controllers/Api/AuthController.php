@@ -21,12 +21,9 @@ class AuthController extends Controller
             'password' => $request->validated('password'),
         ]);
 
-        $token = $user->generateApiToken();
-
         return response()->json([
             'message' => 'Registrasi berhasil.',
             'user' => new UserResource($user),
-            'token' => $token,
         ], 201);
     }
 
