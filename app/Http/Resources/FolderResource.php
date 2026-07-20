@@ -13,8 +13,8 @@ class FolderResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'notes_count' => $this->whenCounted('notes'),
-            'created_at' => $this->created_at?->toIso8601String(),
-            'updated_at' => $this->updated_at?->toIso8601String(),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

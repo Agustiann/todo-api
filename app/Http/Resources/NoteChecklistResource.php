@@ -15,8 +15,8 @@ class NoteChecklistResource extends JsonResource
             'content' => $this->content,
             'is_completed' => $this->is_completed,
             'position' => $this->position,
-            'created_at' => $this->created_at?->toIso8601String(),
-            'updated_at' => $this->updated_at?->toIso8601String(),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

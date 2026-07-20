@@ -29,7 +29,6 @@ class NoteController extends Controller
         return response()->json([
             'message' => 'Daftar note berhasil diambil.',
             'meta' => [
-                'total' => $notes->count(),
                 'total_all_notes' => $totalAllNotes,
             ],
             'data' => NoteResource::collection($notes),
