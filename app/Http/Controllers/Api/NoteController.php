@@ -16,10 +16,7 @@ class NoteController extends Controller
     {
         $notes = $request->user()
             ->notes()
-            ->with([
-                'images',
-                'checklists' => fn ($q) => $q->orderBy('is_completed')->orderBy('position'),
-            ])
+            ->with(['images', 'checklists'])
             ->when($request->filled('folder_id'), fn ($q) => $q->where('folder_id', $request->string('folder_id')))
             ->latest('updated_at')
             ->get();
@@ -27,10 +24,10 @@ class NoteController extends Controller
         $totalAllNotes = $notes->count();
         return response()->json([
             'message' => 'Daftar note berhasil diambil.',
-            'meta' => [
-                'total_all_notes' => $totalAllNotes,
-            ],
-            'data' => NoteResource::collection($notes),
+            'data' => [
+                'total_all_notes' => $totalAllNotes, 
+                'notes' => NoteResource::collection($notes)
+                ],
         ]);
     }
 
@@ -53,10 +50,7 @@ class NoteController extends Controller
 
     public function show(Note $note): JsonResponse
     {
-        $note->load([
-            'images',
-            'checklists' => fn ($q) => $q->orderBy('is_completed')->orderBy('position'),
-        ]);
+        $note->load(['images', 'checklists']);
         return response()->json([
             'message' => 'Detail note berhasil diambil.',
             'data' => new NoteResource($note),
@@ -83,6 +77,7 @@ class NoteController extends Controller
 
         return response()->json([
             'message' => 'Note berhasil dihapus.',
+            'data' => []
         ]);
     }
 }

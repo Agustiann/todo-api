@@ -28,10 +28,6 @@ class NoteImage extends Model
         'url',
     ];
 
-    protected $hidden = [
-        'file_path',
-    ];
-
     public function getUrlAttribute(): string
     {
         return route('notes.images.show', [

@@ -21,12 +21,6 @@ class User extends Authenticatable
         'photo',
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-        'api_token',
-    ];
-
     protected function casts(): array
     {
         return [

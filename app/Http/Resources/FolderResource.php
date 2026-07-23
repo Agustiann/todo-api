@@ -13,6 +13,9 @@ class FolderResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'notes_count' => $this->whenCounted('notes'),
+            'notes' => $this->whenLoaded('notes', fn () => $this->notes->map(fn ($note) => [
+                'title' => $note->title,
+            ])),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
