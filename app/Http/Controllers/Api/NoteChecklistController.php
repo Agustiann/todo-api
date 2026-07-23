@@ -10,13 +10,11 @@ use App\Models\Note;
 use App\Models\NoteChecklist;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class NoteChecklistController extends Controller
 {
     public function index(Note $note): JsonResponse
     {
-        Gate::authorize('view', $note);
 
         $checklists = $note->checklists()
             ->orderBy('is_completed')
@@ -31,7 +29,6 @@ class NoteChecklistController extends Controller
 
     public function store(StoreNoteChecklistRequest $request, Note $note): JsonResponse
     {
-        Gate::authorize('update', $note);
 
         $nextPosition = (int) $note->checklists()->max('position') + 1;
 
@@ -51,7 +48,6 @@ class NoteChecklistController extends Controller
 
     public function update(UpdateNoteChecklistRequest $request, Note $note, NoteChecklist $checklist): JsonResponse
     {
-        Gate::authorize('update', $checklist);
         abort_unless($checklist->note_id === $note->id, 404, 'Checklist tidak ditemukan pada note ini.');
 
         $checklist->update([
@@ -67,7 +63,6 @@ class NoteChecklistController extends Controller
 
     public function destroy(Request $request, Note $note, NoteChecklist $checklist): JsonResponse
     {
-        Gate::authorize('delete', $checklist);
         abort_unless($checklist->note_id === $note->id, 404, 'Checklist tidak ditemukan pada note ini.');
 
         $checklist->update(['deleted_by' => $request->user()->id]);

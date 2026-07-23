@@ -23,7 +23,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Registrasi berhasil.',
-            'user' => new UserResource($user),
+            'data' => new UserResource($user),
         ], 201);
     }
 
@@ -41,7 +41,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Login berhasil.',
-            'user' => new UserResource($user),
+            'data' => new UserResource($user),
             'token' => $token,
         ]);
     }
@@ -52,13 +52,15 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Logout berhasil.',
+            'data' => []
         ]);
     }
 
     public function me(Request $request): JsonResponse
     {
         return response()->json([
-            'user' => new UserResource($request->user()),
+            'message' => 'Data user berhasil diambil.',
+            'data' => new UserResource($request->user()),
         ]);
     }
 }

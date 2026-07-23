@@ -24,6 +24,22 @@ class NoteImage extends Model
         'updated_by',
     ];
 
+    protected $appends = [
+        'url',
+    ];
+
+    protected $hidden = [
+        'file_path',
+    ];
+
+    public function getUrlAttribute(): string
+    {
+        return route('notes.images.show', [
+            'note' => $this->note_id,
+            'image' => $this->id,
+        ]);
+    }
+
     public function note(): BelongsTo
     {
         return $this->belongsTo(Note::class);

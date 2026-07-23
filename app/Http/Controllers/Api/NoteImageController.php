@@ -9,7 +9,6 @@ use App\Models\Note;
 use App\Models\NoteImage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -19,8 +18,6 @@ class NoteImageController extends Controller
 
     public function index(Note $note): JsonResponse
     {
-        Gate::authorize('view', $note);
-
         $images = $note->images()->latest()->get();
 
         return response()->json([
@@ -31,7 +28,6 @@ class NoteImageController extends Controller
 
     public function store(StoreNoteImageRequest $request, Note $note): JsonResponse
     {
-        Gate::authorize('update', $note);
         if (! $request->hasFile('image')) {
             return response()->json([
                 'message' => 'Tidak ada gambar yang diunggah.',
@@ -59,7 +55,6 @@ class NoteImageController extends Controller
 
     public function show(Note $note, NoteImage $image): BinaryFileResponse
     {
-        Gate::authorize('view', $image);
         abort_unless($image->note_id === $note->id, 404, 'Gambar tidak ditemukan pada note ini.');
         $path = Storage::disk('local')->path($image->file_path);
         abort_unless(file_exists($path), 404, 'File gambar tidak ditemukan.');
@@ -70,7 +65,6 @@ class NoteImageController extends Controller
 
     public function destroy(Request $request, Note $note, NoteImage $image): JsonResponse
     {
-        Gate::authorize('delete', $image);
         abort_unless($image->note_id === $note->id, 404, 'Gambar tidak ditemukan pada note ini.');
         Storage::disk('local')->delete($image->file_path);
         $image->update(['deleted_by' => $request->user()->id]);
@@ -78,6 +72,7 @@ class NoteImageController extends Controller
 
         return response()->json([
             'message' => 'Gambar berhasil dihapus.',
+            'data' => []
         ]);
     }
 }

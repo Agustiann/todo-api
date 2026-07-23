@@ -18,7 +18,7 @@ class StoreFolderRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
-                'max:255',
+                'max:25',
                 Rule::unique('folders', 'name')
                     ->where('user_id', $this->user()->id)
             ],

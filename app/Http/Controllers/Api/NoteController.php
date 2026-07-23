@@ -9,7 +9,6 @@ use App\Http\Resources\NoteResource;
 use App\Models\Note;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class NoteController extends Controller
 {
@@ -25,7 +24,7 @@ class NoteController extends Controller
             ->latest('updated_at')
             ->get();
 
-        $totalAllNotes = $request->user()->notes()->count();
+        $totalAllNotes = $notes->count();
         return response()->json([
             'message' => 'Daftar note berhasil diambil.',
             'meta' => [
@@ -54,7 +53,6 @@ class NoteController extends Controller
 
     public function show(Note $note): JsonResponse
     {
-        Gate::authorize('view', $note);
         $note->load([
             'images',
             'checklists' => fn ($q) => $q->orderBy('is_completed')->orderBy('position'),
@@ -67,8 +65,6 @@ class NoteController extends Controller
 
     public function update(UpdateNoteRequest $request, Note $note): JsonResponse
     {
-        Gate::authorize('update', $note);
-
         $note->update([
             ...$request->validated(),
             'updated_by' => $request->user()->id,
@@ -82,8 +78,6 @@ class NoteController extends Controller
 
     public function destroy(Request $request, Note $note): JsonResponse
     {
-        Gate::authorize('delete', $note);
-
         $note->update(['deleted_by' => $request->user()->id]);
         $note->delete();
 

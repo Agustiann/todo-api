@@ -9,7 +9,6 @@ use App\Http\Resources\FolderResource;
 use App\Models\Folder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class FolderController extends Controller
 {
@@ -37,15 +36,13 @@ class FolderController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Folder berhasil dibuat.',
+            'message' => 'Data Folder berhasil dibuat.',
             'data' => new FolderResource($folder),
         ], 201);
     }
 
     public function show(Folder $folder): JsonResponse
     {
-        Gate::authorize('view', $folder);
-
         $folder->load(['notes' => fn ($q) => $q->latest()]);
 
         return response()->json([
@@ -56,28 +53,25 @@ class FolderController extends Controller
 
     public function update(UpdateFolderRequest $request, Folder $folder): JsonResponse
     {
-        Gate::authorize('update', $folder);
-
         $folder->update([
             'name' => $request->validated('name'),
             'updated_by' => $request->user()->id,
         ]);
 
         return response()->json([
-            'message' => 'Folder berhasil diperbarui.',
+            'message' => 'Data Folder berhasil diperbarui.',
             'data' => new FolderResource($folder),
         ]);
     }
 
     public function destroy(Request $request, Folder $folder): JsonResponse
     {
-        Gate::authorize('delete', $folder);
-
         $folder->update(['deleted_by' => $request->user()->id]);
         $folder->delete();
 
         return response()->json([
-            'message' => 'Folder berhasil dihapus.',
+            'message' => 'Data Folder berhasil dihapus.',
+            'data' => []
         ]);
     }
 }
