@@ -14,6 +14,8 @@ Route::prefix('auth')->group(function () {
     Route::middleware('auth.api_token')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('/me', [AuthController::class, 'me']);
+        Route::put('/profile', [AuthController::class, 'updateProfile']);
+        Route::get('/profile/photo', [AuthController::class, 'photo'])->name('auth.profile.photo');
     });
 });
 
