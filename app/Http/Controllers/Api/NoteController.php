@@ -16,7 +16,7 @@ class NoteController extends Controller
     {
         $notes = $request->user()
             ->notes()
-            ->with(['images', 'checklists'])
+            ->with(['images', 'checklists', 'folder'])
             ->when($request->filled('folder_id'), fn ($q) => $q->where('folder_id', $request->string('folder_id')))
             ->latest('updated_at')
             ->get();
@@ -50,7 +50,7 @@ class NoteController extends Controller
 
     public function show(Note $note): JsonResponse
     {
-        $note->load(['images', 'checklists']);
+        $note->load(['images', 'checklists', 'folder']);
         return response()->json([
             'message' => 'Detail note berhasil diambil.',
             'data' => new NoteResource($note),

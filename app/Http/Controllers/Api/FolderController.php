@@ -43,8 +43,9 @@ class FolderController extends Controller
 
     public function show(Folder $folder): JsonResponse
     {
-        $folder->load(['notes' => fn ($q) => $q->latest()]);
-
+        $folder->load([
+            'notes' => fn($q) => $q->orderBy('created_at', 'dsc'),
+        ]);
         return response()->json([
             'message' => 'Detail folder berhasil diambil.',
             'data' => new FolderResource($folder),

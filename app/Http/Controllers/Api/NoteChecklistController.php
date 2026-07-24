@@ -39,6 +39,8 @@ class NoteChecklistController extends Controller
             'created_by' => $request->user()->id,
             'updated_by' => $request->user()->id,
         ]);
+        $note->update(['updated_by' => $request->user()->id]);
+        $note->touch();
 
         return response()->json([
             'message' => 'Checklist berhasil ditambahkan.',
@@ -54,6 +56,8 @@ class NoteChecklistController extends Controller
             ...$request->validated(),
             'updated_by' => $request->user()->id,
         ]);
+        $note->update(['updated_by' => $request->user()->id]);
+        $note->touch();
 
         return response()->json([
             'message' => 'Checklist berhasil diperbarui.',
@@ -67,7 +71,9 @@ class NoteChecklistController extends Controller
 
         $checklist->update(['deleted_by' => $request->user()->id]);
         $checklist->delete();
-
+        $note->update(['updated_by' => $request->user()->id]);
+        $note->touch();
+        
         return response()->json([
             'message' => 'Checklist berhasil dihapus.',
         ]);

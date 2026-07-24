@@ -47,6 +47,9 @@ class NoteImageController extends Controller
             'created_by' => $request->user()->id,
             'updated_by' => $request->user()->id,
         ]);
+        $note->update(['updated_by' => $request->user()->id]);
+        $note->touch();
+        
         return response()->json([
             'message' => 'Gambar berhasil diunggah.',
             'data' => new NoteImageResource($image),
@@ -69,6 +72,8 @@ class NoteImageController extends Controller
         Storage::disk('local')->delete($image->file_path);
         $image->update(['deleted_by' => $request->user()->id]);
         $image->delete();
+        $note->update(['updated_by' => $request->user()->id]);
+        $note->touch();
 
         return response()->json([
             'message' => 'Gambar berhasil dihapus.',
